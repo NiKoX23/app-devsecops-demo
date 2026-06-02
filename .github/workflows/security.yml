@@ -1,0 +1,59 @@
+name: Security - Analisis de Seguridad
+on:
+    push:
+        branches: [ 'main', 'develop' ]
+    pull_request: 
+        branches: ['main']
+    schedule:
+        - cron: '0 3 * * 1'      
+
+permissions: 
+    contents: read
+    security-events: write
+
+jobs:
+    gitleaks:
+        name: Secret Scanning - Gitleaks
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+            - name: Ejecutar Gitleaks
+              uses: gitleaks/gitleaks-action@v2
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    codeql:
+        name: SAST - CodeQL
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+
+            - name: Inicializar CodeQL
+              uses: github/codeql-action/init@v3
+              with:
+                languages: javascript-typescript
+                queries: security-extended
+
+            - name: Auto-build (inferir compilacion)
+              uses: github/codeql-action/autobuild@v3
+
+            - name: Ejecutar analisis CodeQL
+              uses: github/codeql-action/analyze@v3
+              with:
+                category: '/language:javascript-typescript'
+
+    sca-npm:
+        name: SCA - npm audit
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                node-version: '20'
+            - run: npm ci
+            - name: Auditoria de dependencias
+              run: npm audit --audit-level=high
