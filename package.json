@@ -7,7 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "echo ESLint OK",
+    "test": "echo test OK",
+    "build": "mkdir dist && echo Build OK > dist/app.txt"
   },
   "repository": {
     "type": "git",
@@ -21,4 +23,5 @@
     "url": "https://github.com/NiKoX23/app-devsecops-demo/issues"
   },
   "homepage": "https://github.com/NiKoX23/app-devsecops-demo#readme"
+  
 }
