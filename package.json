@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "echo ESLint OK",
     "test": "echo test OK",
-    "build": "mkdir dist && echo Build OK > dist/app.txt"
+    "build": "mkdir -p dist && cp src/index.js dist/index.js"
   },
   "repository": {
     "type": "git",
