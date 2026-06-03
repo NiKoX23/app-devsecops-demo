@@ -8,7 +8,7 @@ const server = http.createServer((req, res) => {
     }
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Hello DevSecOps');
+    res.end('Hello DevSecOpS');
 });
 
 server.listen(3000, () => {
